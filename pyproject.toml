@@ -1,0 +1,30 @@
+[project]
+name = "employee-attrition-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.135.1",
+    "joblib>=1.5.3",
+    "numpy>=2.4.3",
+    "pandas>=3.0.1",
+    "psycopg2-binary>=2.9.11",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.2",
+    "scikit-learn>=1.8.0",
+    "sqlalchemy>=2.0.48",
+    "uvicorn>=0.41.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=26.3.1",
+    "flake8>=7.3.0",
+    "httpx>=0.28.1",
+    "isort>=8.0.1",
+    "mkdocs>=1.6.1",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "sphinx>=9.1.0",
+]
