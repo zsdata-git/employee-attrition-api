@@ -1,17 +1,19 @@
 from fastapi import FastAPI
 
+from app.core.config import settings
+
 app = FastAPI(
-    title="Employee Attrition API",
+    title=settings.APP_NAME,
     description="API de prédiction du risque d'attrition des employés",
-    version="0.1.0"
+    version=settings.APP_VERSION,
 )
 
 
 @app.get("/")
 def root():
-    return {"message": "Employee Attrition API is running"}
+    return {"message": f"{settings.APP_NAME} is running"}
 
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    return {"status": "ok", "environment": settings.APP_ENV}
