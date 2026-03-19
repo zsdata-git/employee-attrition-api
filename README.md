@@ -1,3 +1,14 @@
+---
+title: Employee Attrition API
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
+
 # Employee Attrition API
 
 ## Présentation du projet
