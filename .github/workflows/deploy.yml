@@ -14,14 +14,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Push repository to Hugging Face Space
+      - name: Prepare clean deploy directory
+        run: |
+          mkdir hf-deploy
+          rsync -av --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude ".venv" \
+            --exclude "__pycache__" \
+            --exclude ".pytest_cache" \
+            ./ hf-deploy/
+
+      - name: Push clean snapshot to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "github-actions"
-          git remote add space https://Hayette:${HF_TOKEN}@huggingface.co/spaces/Hayette/employee-attrition-api
-          git push --force space HEAD:main
+          cd hf-deploy
+          git init
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+          git branch -M main
+          git add .
+          git commit -m "Deploy latest snapshot to Hugging Face Space"
+          git remote add origin https://Hayette:${HF_TOKEN}@huggingface.co/spaces/Hayette/employee-attrition-api
+          git push --force origin main
