@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.api.routes.prediction import router as prediction_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -17,3 +18,6 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "ok", "environment": settings.APP_ENV}
+
+
+app.include_router(prediction_router)

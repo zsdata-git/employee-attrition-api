@@ -1,7 +1,12 @@
 import joblib
+import sys
 
 from app.core.config import settings
-from app.models.threshold_classifier import ThresholdClassifier  # important pour joblib
+from app.models.threshold_classifier import ThresholdClassifier
+
+
+# Rend la classe accessible sous __main__.ThresholdClassifier
+sys.modules["__main__"].ThresholdClassifier = ThresholdClassifier
 
 
 def load_model():

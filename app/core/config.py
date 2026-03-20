@@ -12,7 +12,7 @@ class Settings:
     HOST: str = os.getenv("HOST", "127.0.0.1")
     PORT: int = int(os.getenv("PORT", "8000"))
 
-    MODEL_PATH: str = os.getenv("MODEL_PATH", "artifacts/model/model.joblib")
+    MODEL_PATH: str = os.getenv("MODEL_PATH", "artifacts/model/attrition_threshold_model.joblib")
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",
         "postgresql://user:password@localhost:5432/employee_attrition_db",
