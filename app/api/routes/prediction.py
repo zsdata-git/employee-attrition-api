@@ -6,12 +6,11 @@ from app.services.prediction_service import PredictionService
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
-prediction_service = PredictionService()
-
 
 @router.post("/", response_model=PredictionOutput, summary="Predict employee attrition")
 def predict_attrition(payload: PredictionInput):
     try:
+        prediction_service = PredictionService()
         return prediction_service.predict(payload)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")

@@ -1,11 +1,21 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.services.prediction_service import PredictionService
 
 client = TestClient(app)
 
 
-def test_predict_endpoint_returns_prediction():
+def fake_predict(self, payload):
+    return {
+        "prediction": 0,
+        "probability": 0.42,
+    }
+
+
+def test_predict_endpoint_returns_prediction(monkeypatch):
+    monkeypatch.setattr(PredictionService, "predict", fake_predict)
+
     payload = {
         "age": 35,
         "revenu_mensuel": 3200,
@@ -40,7 +50,5 @@ def test_predict_endpoint_returns_prediction():
 
     assert response.status_code == 200
     data = response.json()
-    assert "prediction" in data
-    assert "probability" in data
-    assert data["prediction"] in [0, 1]
-    assert 0 <= data["probability"] <= 1
+    assert data["prediction"] == 0
+    assert data["probability"] == 0.42
