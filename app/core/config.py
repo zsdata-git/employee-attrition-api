@@ -15,7 +15,7 @@ class Settings:
     MODEL_PATH: str = os.getenv("MODEL_PATH", "artifacts/model/attrition_threshold_model.joblib")
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",
-        "postgresql://user:password@localhost:5432/employee_attrition_db",
+        "sqlite:///./app.db",
     )
 
     HF_SPACE_REPO: str = os.getenv("HF_SPACE_REPO", "zsdata-git/employee-attrition-api")
