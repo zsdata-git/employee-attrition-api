@@ -33,3 +33,4 @@ Thumbs.db
 
 #model
 artifacts/model/*.joblib
+!artifacts/model/attrition_threshold_model.joblib
