@@ -9,19 +9,29 @@ from app.db.session import SessionLocal, engine
 
 
 def seed_employees_if_needed():
+    print("🌱 Checking if seeding is needed...")
+
     if not settings.DATABASE_URL.startswith("sqlite"):
+        print("❌ Not SQLite → seeding skipped")
         return
+    print("📦 SQLite detected → seeding enabled")
 
     db = SessionLocal()
 
     try:
         existing_count = db.query(EmployeeRecord).count()
+        print(f"📊 Existing employees in DB: {existing_count}")
+
         if existing_count > 0:
+            print("✅ Data already exists → skipping seeding")
             return
 
+        print("📂 Loading CSV...")
         df = pd.read_csv("data/clean_employee_attrition.csv", encoding="utf-8")
+        print(f"✅ CSV loaded: {len(df)} rows")
 
         employees = []
+        print("🔄 Creating Employee objects...")
         for _, row in df.iterrows():
             employee = EmployeeRecord(
                 age=row["age"],
@@ -55,16 +65,19 @@ def seed_employees_if_needed():
             )
             employees.append(employee)
 
+        print(f"📥 Inserting {len(employees)} employees into DB...")
         db.add_all(employees)
         db.commit()
-        print("SQLite employees table seeded successfully.")
+        print("🎉 SQLite employees table seeded successfully.")
 
-    except Exception:
+    except Exception as e:
+        print(f"❌ Error during seeding: {e}")
         db.rollback()
         raise
 
     finally:
         db.close()
+        print("🔒 DB session closed")
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -72,17 +85,25 @@ app = FastAPI(
     version=settings.APP_VERSION,
 )
 
+print("🚀 Starting application...")
+print(f"📦 Database URL: {settings.DATABASE_URL}")
+
 Base.metadata.create_all(bind=engine)
+print("✅ Database tables created")
+
 seed_employees_if_needed()
 
 @app.get("/")
 def root():
+    print("📡 Root endpoint called")
     return {"message": f"{settings.APP_NAME} is running"}
 
 
 @app.get("/health")
 def health_check():
+    print("💚 Health check called")
     return {"status": "ok", "environment": settings.APP_ENV}
 
 
 app.include_router(prediction_router)
+print("🔗 Prediction router loaded")
