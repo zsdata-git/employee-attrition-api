@@ -10,3 +10,11 @@ def test_health_check():
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
     assert "environment" in response.json()
+
+
+def test_root_endpoint():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "message" in response.json()
+
+

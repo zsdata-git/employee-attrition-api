@@ -13,6 +13,16 @@ def fake_predict(self, payload):
     }
 
 
+def fake_predict_by_employee_id(self, employee_id):
+    return {
+        "prediction": 1,
+        "probability": 0.70,
+    }
+
+
+def fake_predict_by_employee_id_not_found(self, employee_id):
+    raise ValueError("Employee not found")
+
 def test_predict_endpoint_returns_prediction(monkeypatch):
     monkeypatch.setattr(PredictionService, "predict", fake_predict)
 
@@ -52,3 +62,41 @@ def test_predict_endpoint_returns_prediction(monkeypatch):
     data = response.json()
     assert data["prediction"] == 0
     assert data["probability"] == 0.42
+
+
+def test_predict_endpoint_invalid_payload():
+    payload = {
+        "age": 35
+    }
+
+    response = client.post("/predict/", json=payload)
+
+    assert response.status_code == 422
+
+
+def test_predict_by_id_returns_prediction(monkeypatch):
+    monkeypatch.setattr(
+        PredictionService,
+        "predict_by_employee_id",
+        fake_predict_by_employee_id,
+    )
+
+    response = client.post("/predict/by-id/5")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["prediction"] == 1
+    assert data["probability"] == 0.70
+
+
+def test_predict_by_id_employee_not_found(monkeypatch):
+    monkeypatch.setattr(
+        PredictionService,
+        "predict_by_employee_id",
+        fake_predict_by_employee_id_not_found,
+    )
+
+    response = client.post("/predict/by-id/999999")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Employee not found"
