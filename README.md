@@ -102,9 +102,9 @@ employee-attrition-api/
 │   └── load_dataset.py                    # chargement du dataset
 ├── tests/
 │   ├── functional/
+│   |    ├── test_health.py
+│   |    └── test_predict.py
 │   └── unit/
-│       ├── test_health.py
-│       ├── test_predict.py
 │       └── test_prediction_service.py
 ├── .github/
 │   └── workflows/
