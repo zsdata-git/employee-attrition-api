@@ -328,5 +328,15 @@ Pour faire évoluer le projet proprement :
 
 ---
 
+## Bonnes pratiques de sécurité
++ utilisation d’un fichier .env pour stocker les variables sensibles ;
++ exclusion du fichier .env du dépôt Git via .gitignore ;
++ présence d’un fichier .env.example pour documenter la configuration sans exposer de secrets ;
++ séparation claire entre la configuration et le code applicatif ;
++ validation stricte des données d’entrée avec Pydantic ;
++ gestion des erreurs via des exceptions contrôlées dans l’API.
+
+---
+
 ## Auteur 
 projet réalisé par Hayette. 
